@@ -1,0 +1,579 @@
+USE [master]
+GO
+/****** Object:  Database [Flights]    Script Date: 8/25/2022 3:11:00 PM ******/
+CREATE DATABASE [Flights]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'Flights', FILENAME = N'F:\sql server 2019\server installation\MSSQL15.MSSQLSERVER\MSSQL\DATA\Flights.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'Flights_log', FILENAME = N'F:\sql server 2019\server installation\MSSQL15.MSSQLSERVER\MSSQL\DATA\Flights_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [Flights] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Flights].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Flights] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Flights] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Flights] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Flights] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Flights] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Flights] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Flights] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Flights] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Flights] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Flights] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Flights] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Flights] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Flights] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Flights] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Flights] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Flights] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Flights] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Flights] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Flights] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Flights] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Flights] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Flights] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Flights] SET RECOVERY FULL 
+GO
+ALTER DATABASE [Flights] SET  MULTI_USER 
+GO
+ALTER DATABASE [Flights] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Flights] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Flights] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Flights] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Flights] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Flights] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [Flights] SET QUERY_STORE = OFF
+GO
+USE [Flights]
+GO
+/****** Object:  Table [dbo].[Airline]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Airline](
+	[code] [varchar](900) NOT NULL,
+	[sequence] [int] NULL,
+	[country] [varchar](900) NULL,
+	[description] [varchar](900) NULL,
+	[seq_ID] [varchar](900) NULL,
+ CONSTRAINT [PK_Airline] PRIMARY KEY CLUSTERED 
+(
+	[code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
+ CONSTRAINT [SeqId] UNIQUE NONCLUSTERED 
+(
+	[sequence] ASC,
+	[code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Card]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Card](
+	[PAN] [varchar](900) NOT NULL,
+	[userName] [varchar](900) NULL,
+	[franchise] [varchar](900) NULL,
+	[cvc] [varchar](900) NULL,
+	[expiration] [varchar](900) NULL,
+ CONSTRAINT [PK_Card] PRIMARY KEY CLUSTERED 
+(
+	[PAN] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Country]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Country](
+	[Code] [varchar](900) NOT NULL,
+	[sequence] [int] NULL,
+	[description] [varchar](1000) NULL,
+	[seq_ID] [varchar](900) NULL,
+ CONSTRAINT [PK_Country] PRIMARY KEY CLUSTERED 
+(
+	[Code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Door]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Door](
+	[code] [varchar](900) NOT NULL,
+	[sequence] [int] NULL,
+	[country] [varchar](900) NULL,
+	[description] [varchar](1000) NULL,
+	[isClosed] [tinyint] NULL,
+	[seq_ID] [varchar](900) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[errorLog]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[errorLog](
+	[id] [bigint] NOT NULL,
+	[detail] [varchar](1000) NULL,
+	[at] [timestamp] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Flight]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Flight](
+	[Code] [varchar](900) NOT NULL,
+	[sequence] [int] NULL,
+	[origin] [varchar](1000) NULL,
+	[to] [varchar](1000) NULL,
+	[airline] [varchar](900) NULL,
+	[dateDep] [date] NULL,
+	[dateArrive] [date] NULL,
+	[timeArrive] [time](7) NULL,
+	[status] [varchar](1000) NULL,
+	[seq_ID] [varchar](900) NULL,
+	[timeDep] [time](7) NULL,
+	[cost] [int] NULL,
+ CONSTRAINT [PK_Flight] PRIMARY KEY CLUSTERED 
+(
+	[Code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Journal]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Journal](
+	[userName] [varchar](900) NULL,
+	[id] [bigint] NOT NULL,
+	[recordCode] [varchar](900) NULL,
+	[action] [varchar](1) NULL,
+	[description] [varchar](900) NULL,
+	[detail] [varchar](1000) NULL,
+	[at] [timestamp] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Purchase]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Purchase](
+	[code] [varchar](900) NOT NULL,
+	[sequence] [int] NULL,
+	[card] [varchar](900) NULL,
+	[ticket] [varchar](900) NULL,
+	[date] [timestamp] NULL,
+	[seq_ID] [varchar](900) NULL,
+	[userName] [varchar](900) NULL,
+ CONSTRAINT [PK_Purchase] PRIMARY KEY CLUSTERED 
+(
+	[code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Reservation]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Reservation](
+	[BookingId] [varchar](900) NOT NULL,
+	[sequence] [int] NULL,
+	[userName] [varchar](900) NULL,
+	[ticket] [varchar](900) NULL,
+	[status] [varchar](1) NULL,
+	[seq_ID] [varchar](900) NULL,
+ CONSTRAINT [PK_Reservation] PRIMARY KEY CLUSTERED 
+(
+	[BookingId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Role]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Role](
+	[id] [varchar](900) NOT NULL,
+	[description] [varchar](900) NOT NULL,
+ CONSTRAINT [PK_Rol] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Sequence]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Sequence](
+	[Sequence] [int] NOT NULL,
+	[description] [varchar](900) NOT NULL,
+	[hasPrefix] [tinyint] NOT NULL,
+	[prefix] [varchar](3) NULL,
+	[hasRange] [tinyint] NOT NULL,
+	[iniRange] [int] NULL,
+	[endRange] [int] NULL,
+	[lastValue] [int] NULL,
+ CONSTRAINT [PK_Sequence] PRIMARY KEY CLUSTERED 
+(
+	[Sequence] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Ticket]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Ticket](
+	[code] [varchar](900) NOT NULL,
+	[sequnece] [int] NULL,
+	[flight] [varchar](900) NULL,
+	[cost] [int] NULL,
+	[status] [varchar](1) NULL,
+	[seq_ID] [varchar](900) NULL,
+ CONSTRAINT [PK_Ticket] PRIMARY KEY CLUSTERED 
+(
+	[code] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Users]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Users](
+	[userName] [varchar](900) NOT NULL,
+	[role] [varchar](900) NOT NULL,
+	[password] [varchar](128) NOT NULL,
+	[email] [varchar](256) NOT NULL,
+	[secQuestion] [varchar](100) NOT NULL,
+	[secAnswer] [varchar](900) NOT NULL,
+ CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
+(
+	[userName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Airline]  WITH CHECK ADD  CONSTRAINT [FK_Airline_country] FOREIGN KEY([country])
+REFERENCES [dbo].[Country] ([Code])
+GO
+ALTER TABLE [dbo].[Airline] CHECK CONSTRAINT [FK_Airline_country]
+GO
+ALTER TABLE [dbo].[Airline]  WITH CHECK ADD  CONSTRAINT [FK_Airline_seq] FOREIGN KEY([sequence])
+REFERENCES [dbo].[Sequence] ([Sequence])
+GO
+ALTER TABLE [dbo].[Airline] CHECK CONSTRAINT [FK_Airline_seq]
+GO
+ALTER TABLE [dbo].[Card]  WITH CHECK ADD  CONSTRAINT [FK_Card_user] FOREIGN KEY([userName])
+REFERENCES [dbo].[Users] ([userName])
+GO
+ALTER TABLE [dbo].[Card] CHECK CONSTRAINT [FK_Card_user]
+GO
+ALTER TABLE [dbo].[Country]  WITH CHECK ADD  CONSTRAINT [FK_Country_Seq] FOREIGN KEY([sequence])
+REFERENCES [dbo].[Sequence] ([Sequence])
+GO
+ALTER TABLE [dbo].[Country] CHECK CONSTRAINT [FK_Country_Seq]
+GO
+ALTER TABLE [dbo].[Door]  WITH CHECK ADD  CONSTRAINT [FK_Door_country] FOREIGN KEY([country])
+REFERENCES [dbo].[Country] ([Code])
+GO
+ALTER TABLE [dbo].[Door] CHECK CONSTRAINT [FK_Door_country]
+GO
+ALTER TABLE [dbo].[Door]  WITH CHECK ADD  CONSTRAINT [FK_Door_seq] FOREIGN KEY([sequence])
+REFERENCES [dbo].[Sequence] ([Sequence])
+GO
+ALTER TABLE [dbo].[Door] CHECK CONSTRAINT [FK_Door_seq]
+GO
+ALTER TABLE [dbo].[Flight]  WITH CHECK ADD  CONSTRAINT [FK_Flight_airline] FOREIGN KEY([airline])
+REFERENCES [dbo].[Airline] ([code])
+GO
+ALTER TABLE [dbo].[Flight] CHECK CONSTRAINT [FK_Flight_airline]
+GO
+ALTER TABLE [dbo].[Flight]  WITH CHECK ADD  CONSTRAINT [FK_Flight_seq] FOREIGN KEY([sequence])
+REFERENCES [dbo].[Sequence] ([Sequence])
+GO
+ALTER TABLE [dbo].[Flight] CHECK CONSTRAINT [FK_Flight_seq]
+GO
+ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD  CONSTRAINT [FK_Purchase_card] FOREIGN KEY([card])
+REFERENCES [dbo].[Card] ([PAN])
+GO
+ALTER TABLE [dbo].[Purchase] CHECK CONSTRAINT [FK_Purchase_card]
+GO
+ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD  CONSTRAINT [FK_Purchase_seq] FOREIGN KEY([sequence])
+REFERENCES [dbo].[Sequence] ([Sequence])
+GO
+ALTER TABLE [dbo].[Purchase] CHECK CONSTRAINT [FK_Purchase_seq]
+GO
+ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD  CONSTRAINT [FK_Purchase_tickert] FOREIGN KEY([ticket])
+REFERENCES [dbo].[Ticket] ([code])
+GO
+ALTER TABLE [dbo].[Purchase] CHECK CONSTRAINT [FK_Purchase_tickert]
+GO
+ALTER TABLE [dbo].[Reservation]  WITH CHECK ADD  CONSTRAINT [FK_Reservation_seq] FOREIGN KEY([sequence])
+REFERENCES [dbo].[Sequence] ([Sequence])
+GO
+ALTER TABLE [dbo].[Reservation] CHECK CONSTRAINT [FK_Reservation_seq]
+GO
+ALTER TABLE [dbo].[Reservation]  WITH CHECK ADD  CONSTRAINT [FK_Reservation_ticket] FOREIGN KEY([ticket])
+REFERENCES [dbo].[Ticket] ([code])
+GO
+ALTER TABLE [dbo].[Reservation] CHECK CONSTRAINT [FK_Reservation_ticket]
+GO
+ALTER TABLE [dbo].[Reservation]  WITH CHECK ADD  CONSTRAINT [FK_Reservation_user] FOREIGN KEY([userName])
+REFERENCES [dbo].[Users] ([userName])
+GO
+ALTER TABLE [dbo].[Reservation] CHECK CONSTRAINT [FK_Reservation_user]
+GO
+ALTER TABLE [dbo].[Ticket]  WITH CHECK ADD  CONSTRAINT [FK_Ticket_Sequence] FOREIGN KEY([sequnece])
+REFERENCES [dbo].[Sequence] ([Sequence])
+GO
+ALTER TABLE [dbo].[Ticket] CHECK CONSTRAINT [FK_Ticket_Sequence]
+GO
+ALTER TABLE [dbo].[Users]  WITH CHECK ADD  CONSTRAINT [FK_User_rol] FOREIGN KEY([role])
+REFERENCES [dbo].[Role] ([id])
+GO
+ALTER TABLE [dbo].[Users] CHECK CONSTRAINT [FK_User_rol]
+GO
+/****** Object:  Trigger [dbo].[insert_Airline]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[insert_Airline]
+ON [dbo].[Airline] AFTER INSERT
+AS
+BEGIN
+declare @value int
+declare @prefijo varchar(3)
+select @value = lastValue from Sequence WHERE Sequence=1;
+select @prefijo = prefix from Sequence WHERE Sequence=1;
+UPDATE Airline 
+SET seq_ID = CONCAT(@prefijo,'-',@value+1) from Airline
+WHERE Seq_ID is null;
+
+UPDATE Sequence 
+SET lastValue = @value+1 from Sequence
+WHERE Sequence = 1;
+
+end
+GO
+ALTER TABLE [dbo].[Airline] ENABLE TRIGGER [insert_Airline]
+GO
+/****** Object:  Trigger [dbo].[insert_Country]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TRIGGER [dbo].[insert_Country]
+ON [dbo].[Country] AFTER INSERT
+AS
+BEGIN
+declare @value int
+declare @prefijo varchar(3)
+select @value = lastValue from Sequence WHERE Sequence=2;
+select @prefijo = prefix from Sequence WHERE Sequence=2;
+UPDATE Country 
+SET seq_ID = CONCAT(@prefijo,'-',@value+1) from Country
+WHERE seq_ID is null;
+
+UPDATE Sequence 
+SET lastValue = @value+1 from Sequence
+WHERE Sequence = 2;
+
+end
+GO
+ALTER TABLE [dbo].[Country] ENABLE TRIGGER [insert_Country]
+GO
+/****** Object:  Trigger [dbo].[insert_Door]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create TRIGGER [dbo].[insert_Door]
+ON [dbo].[Door] AFTER INSERT
+AS
+BEGIN
+declare @value int
+declare @prefijo varchar(3)
+select @value = lastValue from Sequence WHERE Sequence=3;
+select @prefijo = prefix from Sequence WHERE Sequence=3;
+UPDATE Door 
+SET seq_ID = CONCAT(@prefijo,'-',@value+1) from Door
+WHERE seq_ID is null;
+
+UPDATE Sequence 
+SET lastValue = @value+1 from Sequence
+WHERE Sequence =3;
+
+end
+GO
+ALTER TABLE [dbo].[Door] ENABLE TRIGGER [insert_Door]
+GO
+/****** Object:  Trigger [dbo].[insert_Flight]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create TRIGGER [dbo].[insert_Flight]
+ON [dbo].[Flight] AFTER INSERT
+AS
+BEGIN
+declare @value int
+declare @prefijo varchar(3)
+select @value = lastValue from Sequence WHERE Sequence=4;
+select @prefijo = prefix from Sequence WHERE Sequence=4;
+UPDATE Flight 
+SET seq_ID = CONCAT(@prefijo,'-',@value+1) from Flight
+WHERE seq_ID is null;
+
+UPDATE Sequence 
+SET lastValue = @value+1 from Sequence
+WHERE Sequence =4;
+
+end
+GO
+ALTER TABLE [dbo].[Flight] ENABLE TRIGGER [insert_Flight]
+GO
+/****** Object:  Trigger [dbo].[insert_Purchase]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create TRIGGER [dbo].[insert_Purchase]
+ON [dbo].[Purchase] AFTER INSERT
+AS
+BEGIN
+declare @value int
+declare @prefijo varchar(3)
+select @value = lastValue from Sequence WHERE Sequence=5;
+select @prefijo = prefix from Sequence WHERE Sequence=5;
+UPDATE Purchase 
+SET seq_ID = CONCAT(@prefijo,'-',@value+1) from Purchase
+WHERE seq_ID is null;
+
+UPDATE Sequence 
+SET lastValue = @value+1 from Sequence
+WHERE Sequence =5;
+
+end
+GO
+ALTER TABLE [dbo].[Purchase] ENABLE TRIGGER [insert_Purchase]
+GO
+/****** Object:  Trigger [dbo].[insert_Reservation]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create TRIGGER [dbo].[insert_Reservation]
+ON [dbo].[Reservation] AFTER INSERT
+AS
+BEGIN
+declare @value int
+declare @prefijo varchar(3)
+select @value = lastValue from Sequence WHERE Sequence=6;
+select @prefijo = prefix from Sequence WHERE Sequence=6;
+UPDATE Reservation 
+SET seq_ID = CONCAT(@prefijo,'-',@value+1) from Reservation
+WHERE seq_ID is null;
+
+UPDATE Sequence 
+SET lastValue = @value+1 from Sequence
+WHERE Sequence =6;
+
+end
+GO
+ALTER TABLE [dbo].[Reservation] ENABLE TRIGGER [insert_Reservation]
+GO
+/****** Object:  Trigger [dbo].[insert_Ticket]    Script Date: 8/25/2022 3:11:00 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Create TRIGGER [dbo].[insert_Ticket]
+ON [dbo].[Ticket] AFTER INSERT
+AS
+BEGIN
+declare @value int
+declare @prefijo varchar(3)
+select @value = lastValue from Sequence WHERE Sequence=7;
+select @prefijo = prefix from Sequence WHERE Sequence=7;
+UPDATE Ticket 
+SET seq_ID = CONCAT(@prefijo,'-',@value+1) from Ticket
+WHERE seq_ID is null;
+
+UPDATE Sequence 
+SET lastValue = @value+1 from Sequence
+WHERE Sequence =7;
+
+end
+GO
+ALTER TABLE [dbo].[Ticket] ENABLE TRIGGER [insert_Ticket]
+GO
+USE [master]
+GO
+ALTER DATABASE [Flights] SET  READ_WRITE 
+GO
